@@ -3,6 +3,7 @@ import pandas as pd
 import glob
 import numpy as np
 import sys
+import os
 
 if __name__ == '__main__':
     print sys.argv
@@ -10,13 +11,15 @@ if __name__ == '__main__':
         print 'lack of parameters including data_path and output_file'
         print 'python statistics.py data_path output_file'
     else:
-        DATA_PATH = '/home/hoangnh/PythonProject/RiceReconization/data/features-VIS/'        
-        DATA_PATH = sys.argv[1]
+        # DATA_PATH = '/home/hoangnh/PythonProject/RiceReconization/data/features-VIS/'        
+        DATA_PATH = os.path.abspath(sys.argv[1]) + '/'
+        # print DATA_PATH
 
         FIELD_NAMES = ['species', '1st_spatial_path', '2st_spatial_path', '1st_spec_path', '2st_spec_path']
         fileNames = sys.argv[2]
-        list_spec_feature_file_path = glob.glob(DATA_PATH + '*fullricespec.mat')
-        list_spatial_feature_file_path = glob.glob(DATA_PATH + '*Feat.mat')
+        # print (DATA_PATH + '\*fullricespec.mat')
+        list_spec_feature_file_path = glob.glob(DATA_PATH + '/*fullricespec.mat')
+        list_spatial_feature_file_path = glob.glob(DATA_PATH + '/*Feat.mat')
         list_spatial_feature_file_path.sort()
         list_spec_feature_file_path.sort()
         aboveLettersNum = len(DATA_PATH) + 4
@@ -46,4 +49,3 @@ if __name__ == '__main__':
             writer.writerows(records)
         print species
         print 'end'
-
