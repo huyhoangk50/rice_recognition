@@ -15,33 +15,34 @@ if __name__ == '__main__':
         DATA_PATH = os.path.abspath(sys.argv[1]) + '/'
         # print DATA_PATH
 
-        FIELD_NAMES = ['species', '1st_spatial_path', '2st_spatial_path', '1st_spec_path', '2st_spec_path']
+        FIELD_NAMES = ['species', '1st_spec_path', '2st_spec_path']
         fileNames = sys.argv[2]
         # print (DATA_PATH + '\*fullricespec.mat')
         list_spec_feature_file_path = glob.glob(DATA_PATH + '/*fullricespec.mat')
-        list_spatial_feature_file_path = glob.glob(DATA_PATH + '/*Feat.mat')
-        list_spatial_feature_file_path.sort()
+        # list_spatial_feature_file_path = glob.glob(DATA_PATH + '/*Feat.mat')
+        # list_spatial_feature_file_path.sort()
         list_spec_feature_file_path.sort()
-        aboveLettersNum = len(DATA_PATH) + 4
-        bellowLettersNum = 20
+        aboveLettersNum = len(DATA_PATH)
+        bellowLettersNum = 17
 
         species = list()
         firstSpecFilePath = list()
         secondSpecFilePath = list()
 
-        firstSpatialFilePath = list()
-        secondSpatialFilePath = list()
+        # firstSpatialFilePath = list()
+        # secondSpatialFilePath = list()
         for i in xrange (len(list_spec_feature_file_path)):
             key = list_spec_feature_file_path[i][aboveLettersNum:-bellowLettersNum]
+            print key, list_spec_feature_file_path[i]
             if i%2 ==0:
                 species.append(key)
-                firstSpatialFilePath.append(list_spatial_feature_file_path[i])
+                # irstSpatialFilePath.append(list_spatial_feature_file_path[i])
                 firstSpecFilePath.append(list_spec_feature_file_path[i])
             else:
-                secondSpatialFilePath.append(list_spatial_feature_file_path[i])
+                # secondSpatialFilePath.append(list_spatial_feature_file_path[i])
                 secondSpecFilePath.append(list_spec_feature_file_path[i])
 
-        records = np.asarray([species, firstSpatialFilePath, secondSpatialFilePath, firstSpecFilePath, secondSpecFilePath]).T
+        records = np.asarray([species, firstSpecFilePath, secondSpecFilePath]).T
         # print records.shape
         with open(fileNames, 'wb') as dictFile:
             writer = csv.writer(dictFile)
