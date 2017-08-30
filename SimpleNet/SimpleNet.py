@@ -4,6 +4,9 @@ import os
 import glob
 from scipy import sparse
 import random as rd
+import os
+os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=gpu,floatX=float32"
+import theano
 from keras.models import Sequential 
 from keras.layers import Dense
 from keras.layers import Dropout
@@ -158,7 +161,7 @@ classifiers2 = [
 
 dictionary = pd.read_csv('../data/dictionary.csv')
 
-group1 = ['NDC1', 'NV1', 'NepCoTien', 'NepThomBacHai', 'NepThomHungYen', 'NepDacSanLienHoa']
+# group1 = ['NDC1', 'NV1', 'NepCoTien', 'NepThomBacHai', 'NepThomHungYen', 'NepDacSanLienHoa']
 group2 = ['BC15', 'KimCuong111', 'NBK', 'NBP', 'NPT1', 'TB13']
 group3 = ['CL61' , 'PD211', 'R068', 'SHPT1', 'SVN1']
 group4 = ['NT16', 'BQ10', 'KB16', 'VH8', 'PC10', 'NH92']
@@ -166,8 +169,8 @@ group4 = ['NT16', 'BQ10', 'KB16', 'VH8', 'PC10', 'NH92']
 nSpecFeatures = 256
 nSpatialFeatures = 6
 # nClasses = len(groups)
-
-groups = [group1, group2, group3, group4]
+groups = [group2, group3, group4]
+# groups = [group1, group2, group3, group4]
 for g in range(0, len(groups)):
     group = groups[g]
     nClasses = len(group)
@@ -201,7 +204,7 @@ for g in range(0, len(groups)):
 
     spatialData = spatialData.reshape(nClasses, nSamples, nSpatialFeatures)
 
-    for count in range(0,5):
+    for count in range(0,5):    
         # separate data
         spatialPosTraining, spatialVal, spatialNegTraining = trainTestSaperate(spatialData, trainRatio, negRatio, nSpatialFeatures)
         specPosTraining, specVal, specNegTraining = trainTestSaperate(specData, trainRatio, negRatio, nSpecFeatures)
@@ -286,13 +289,13 @@ for g in range(0, len(groups)):
             spatialResult = np.asarray(spatialResult)
             specResult = np.asarray(specResult)
             fileNames = '../Result/Group_' + str(g) + '/time_' + str(count) + 'spatial' +'_sp_' + group[i] + '.csv'
-            if not os.path.exists('../Result/Group_' + str(g)):
-                os.makedirs('../Result/Group_' + str(g) )
+            if not os.path.exists('../Result/Group_v2' + str(g)):
+                os.makedirs('../Result/Group_v2' + str(g) )
             with open(fileNames, 'wb') as dictFile:
                 writer = csv.writer(dictFile)
                 writer.writerow(FIELD_NAMES)
                 writer.writerows(spatialResult)
-            fileNames = '../Result/Group_' + str(g) + '/time_' + str(count) + 'spec' +'_sp_' + group[i] + '.csv'
+            fileNames = '../Result/Group_v2' + str(g) + '/time_' + str(count) + 'spec' +'_sp_' + group[i] + '.csv'
             with open(fileNames, 'wb') as dictFile:
                 writer = csv.writer(dictFile)
                 writer.writerow(FIELD_NAMES)
