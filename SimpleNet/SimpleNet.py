@@ -164,7 +164,7 @@ dictionary = pd.read_csv('../data/dictionary.csv')
 # group1 = ['NDC1', 'NV1', 'NepCoTien', 'NepThomBacHai', 'NepThomHungYen', 'NepDacSanLienHoa']
 # group2 = ['BC15', 'KimCuong111', 'NBK', 'NBP', 'NPT1', 'TB13']
 # group3 = ['CL61' , 'PD211', 'R068', 'SHPT1', 'SVN1']
-group4 = ['NT16', 'BQ10', 'KB16', 'VH8', 'PC10', 'NH92']
+group4 = ['NT16', 'BQ10', 'KB16', 'VietHuong8', 'PC10', 'NH92']
 
 nSpecFeatures = 256
 nSpatialFeatures = 6
