@@ -169,7 +169,7 @@ group3 = ['CL61' , 'PD211', 'R068', 'SHPT1', 'SVN1']
 nSpecFeatures = 256
 nSpatialFeatures = 6
 # nClasses = len(groups)
-groups = [group2, group3, group4]
+groups = [ group3]
 # groups = [group1, group2, group3, group4]
 for g in range(0, len(groups)):
     group = groups[g]
