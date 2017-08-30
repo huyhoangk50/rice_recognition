@@ -163,8 +163,8 @@ dictionary = pd.read_csv('../data/dictionary.csv')
 
 # group1 = ['NDC1', 'NV1', 'NepCoTien', 'NepThomBacHai', 'NepThomHungYen', 'NepDacSanLienHoa']
 group2 = ['BC15', 'KimCuong111', 'NBK', 'NBP', 'NPT1', 'TB13']
-group3 = ['CL61' , 'PD211', 'R068', 'SHPT1', 'SVN1']
-group4 = ['NT16', 'BQ10', 'KB16', 'VH8', 'PC10', 'NH92']
+# group3 = ['CL61' , 'PD211', 'R068', 'SHPT1', 'SVN1']
+# group4 = ['NT16', 'BQ10', 'KB16', 'VH8', 'PC10', 'NH92']
 
 nSpecFeatures = 256
 nSpatialFeatures = 6
@@ -213,7 +213,7 @@ for g in range(0, len(groups)):
         for i in range(0, nClasses):
             spatialResult = list()
             specResult = list()
-            for k in range(0,10):
+            for k in range(0,1):
                 for j in [1, 2]:
                     if j == 1:
                         allTrainData, allTrainLabels, allTestData, allTestLabels =generateDatasetForBinaryClassification(i, spatialPosTraining, spatialNegTraining, spatialVal)
@@ -288,10 +288,11 @@ for g in range(0, len(groups)):
                 specResult.append(specScores)
             spatialResult = np.asarray(spatialResult)
             specResult = np.asarray(specResult)
-            fileNames = '../Result/Group_' + str(g) + '/time_' + str(count) + 'spatial' +'_sp_' + group[i] + '.csv'
+            fileNames = '../Result/Group_v2' + str(g) + '/time_' + str(count) + 'spatial' +'_sp_' + group[i] + '.csv'
             if not os.path.exists('../Result/Group_v2' + str(g)):
-                os.makedirs('../Result/Group_v2' + str(g) )
+                os.makedirs('../Result/Group_v2' + str(g))
             with open(fileNames, 'wb') as dictFile:
+                # print '--------------------------------------------------------------------------'
                 writer = csv.writer(dictFile)
                 writer.writerow(FIELD_NAMES)
                 writer.writerows(spatialResult)
