@@ -24,20 +24,19 @@ np.random.seed(seed)
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
-def readSpecFeature(file_name):
+def readFullSpecFeature(file_name):
     content = sio.loadmat(file_name)
+#     print content
     return content['fullspecData']
 
-def loadSpecData(species, dictPath = '../data/dict.csv', dictionary = None):
-    if dictionary is None:
-        dictionary = pd.read_csv(dictPath)
-    listSpecies = dictionary['species']
-    index = listSpecies[listSpecies == species].index[0]
-    firstPath = dictionary['1st_spec_path'][index]
-    secondPath = dictionary['2st_spec_path'][index]
-    firstFeatures = readSpecFeature(firstPath)
-    secondFeatures = readSpecFeature(secondPath)
-    return np.concatenate((firstFeatures, secondFeatures), axis = 0)
+def loadFullSpecFeature(species, rootPath = '../data/specData/', timeNum = 2, seedsNum = 48):
+    data = list()
+    for time in range(0, timeNum):
+        for seed in range(0,seedsNum):
+            file_name = rootPath + species + '-0' + str(time +1) + '/' + str(seed + 1)+"_"+"spec.mat"
+#             print file_name
+            data.append(readFullSpecFeature(file_name))
+    return np.asarray(data)
 
 def separate(data, trainRatio = 0.84):
     np.random.shuffle(data)
@@ -145,7 +144,7 @@ def trainTestSaperate(data, trainRatio, negRatio, nFeatures):
 
 
 
-dictionary = pd.read_csv('../data/dictionary.csv')
+# dictionary = pd.read_csv('../data/dictionary.csv')
 
 # group1 = ['NDC1', 'NV1', 'NepCoTien', 'NepThomBacHai', 'NepThomHungYen', 'NepDacSanLienHoa']
 # group2 = ['BC15', 'KimCuong111', 'NBK', 'NBP', 'NPT1', 'TB13']
