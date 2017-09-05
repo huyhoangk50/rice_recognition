@@ -67,14 +67,15 @@ def generateDatasetForBinaryClassification(speciesPosition, posTraining, negTrai
     return allTrainData, allTrainLabels, allTestData, allTestLabels
 
 def C3D(summary = False):
-        """ Return the Keras model of the network
+    """ Return the Keras model of the network
     """
     model = Sequential()
     # 1st layer group
     model.add(Convolution3D(64, 3, 3, 3, activation='relu', 
                             border_mode='same', name='conv1',
                             subsample=(1, 1, 1), 
-                            input_shape=(3, 24, 48, 48)))
+                            input_shape=(48, 48, 24, 3)))
+#     print model.output_shape
     model.add(MaxPooling3D(pool_size=(1, 2, 2), strides=(1, 2, 2), 
                            border_mode='valid', name='pool1'))
     # 2nd layer group
@@ -113,11 +114,9 @@ def C3D(summary = False):
                            border_mode='valid', name='pool5'))
     model.add(Flatten())
     # FC layers group
-    model.add(Dense(4096, activation='relu', name='fc6'))
+    model.add(Dense(1000, activation='relu', name='fc6'))
     model.add(Dropout(.5))
-    model.add(Dense(4096, activation='relu', name='fc7'))
-    model.add(Dropout(.5))
-    model.add(Dense(487, activation='softmax', name='fc8'))
+    model.add(Dense(2, activation='relu', name='fc7'))
     if summary:
         print(model.summary())
     return model
@@ -149,22 +148,20 @@ def trainTestSaperate(data, trainRatio, negRatio, nFeatures):
 # group1 = ['NDC1', 'NV1', 'NepCoTien', 'NepThomBacHai', 'NepThomHungYen', 'NepDacSanLienHoa']
 # group2 = ['BC15', 'KimCuong111', 'NBK', 'NBP', 'NPT1', 'TB13']
 # group3 = ['CL61' , 'PD211', 'R068', 'SHPT1', 'SVN1']
-group4 = ['NT16', 'BQ10', 'KB16', 'VietHuong8', 'PC10', 'NH92']
+group = ['NT16', 'BQ10', 'KB16', 'VietHuong8', 'PC10', 'NH92']
 
 nSpecFeatures = 256
 # nClasses = len(groups)
-groups = [group4]
+# groups = [group4]
 # groups = [group1, group2, group3, group4]
-for g in range(0, len(groups)):
+for g in range(0, len(group)):
     group = groups[g]
     nClasses = len(group)
+    specData = list()
     for c in range(0, nClasses):
-        if c == 0:
-            specData = loadSpecData(group[c])
-        else:
-            dataTemp = loadSpecData(group[c])
-            specData = np.concatenate((specData, dataTemp), axis = 0)
-
+        specData.append(loadFullSpecFeature(group[c]))
+    specData = np.asarray(specData)
+    print specData.shape
     nSamples = specData.shape[0]/nClasses
     trainRatio = 0.84
     negRatio = 0.2
@@ -191,7 +188,7 @@ for g in range(0, len(groups)):
                 specScores = list()
 
                 model = C3D(summary = True)   
-                history = model.fit(allTrainData, allTrainLabels, validation_data = (allTestData,allTestLabels), epochs=225, batch_size=40, verbose = 1)
+                history = model.fit(allTrainData, allTrainLabels, validation_data = (allTestData,allTestLabels), epochs=225, batch_size=20, verbose = 1)
                 specCNNScores = model.evaluate(allTestData, allTestLabels)
                 print("\n%s: %.2f%%" % (model.metrics_names[1], specCNNScores[1]*100))
                 specScores.append(specCNNScores[1])
