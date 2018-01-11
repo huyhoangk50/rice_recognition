@@ -2,6 +2,10 @@ data/features-VIS/
 dictionary.csv
 indian_diabete_code/
 SimpleNet/.ipynb_checkpoints/SimpleNet-checkpoint.ipynb
-Result/
+Result/*
 data/
 C3D/.ipynb_checkpoints/Untitled-checkpoint.ipynb
+*.csv
+*.swo
+*.swp
+.ipynb_checkpoints/*
